@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: odds-api
+    env: docker
+    plan: free
+    autoDeploy: true
