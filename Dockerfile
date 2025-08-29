@@ -1,12 +1,10 @@
-# Imagem oficial do Playwright já com Chromium instalado
-FROM mcr.microsoft.com/playwright/python:v1.44.0-jammy
+FROM mcr.microsoft.com/playwright/python:v1.55.0-focal
 
 WORKDIR /app
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-ENV PORT=8000
-EXPOSE 8000
+COPY . .
+
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
