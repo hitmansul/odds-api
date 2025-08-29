@@ -1,19 +1,19 @@
-# Imagem oficial do Playwright com Python + browsers (Jammy)
+# Dockerfile
 FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy
 
-# Evita que a imagem tente buscar browsers fora
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-ENV PYTHONDONTWRITEBYTECODE=1
+# Evita buffer no log
 ENV PYTHONUNBUFFERED=1
 
+# Pasta de trabalho
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
+# Dependências Python
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /app
+# Código
+COPY main.py .
 
-# Porta que o Render expõe automaticamente
-ENV PORT=8000
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# A imagem do Playwright já vem com os browsers instalados.
+# Exposição e comando (Render define $PORT)
+CMD ["bash", "-lc", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
